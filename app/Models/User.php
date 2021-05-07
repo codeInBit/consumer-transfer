@@ -5,12 +5,16 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use App\Traits\Uuid;
 
 class User extends Authenticatable
 {
+    use SoftDeletes;
     use HasFactory;
     use Notifiable;
+    use Uuid;
 
     /**
      * The attributes that are mass assignable.
