@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call(BanksTableSeeder::class);
         \App\Models\User::factory(5)
             ->has(\App\Models\Wallet::factory(), 'wallet')
             ->create();
