@@ -22,7 +22,7 @@ class TransferRecipient extends Model
 
     public function user()
     {
-        return $this->belongTo('App\Models\User');
+        return $this->belongsTo('App\Models\User');
     }
 
     public function bankTransactions()

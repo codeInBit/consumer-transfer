@@ -52,13 +52,14 @@ class TransferController extends Controller
         /**
          * I need the resulting $query to be an instance of Illuminate\\Database\\Eloquent\\Builder
          * or Illuminate\\Database\\Query\\Builder, that was why I didn't use this.
-         * 
+         *
          * $query = $user->walletTransactions()->with('bankTransaction');
          */
         $query = WalletTransaction::where('wallet_id', $user->wallet->id)
             ->with('bankTransaction', 'bankTransaction.transferRecipient');
 
-        return $this->datatableResponse($query,
+        return $this->datatableResponse(
+            $query,
             "App\Http\Resources\WalletTransactionResource",
             [
                 'search' => function ($query, $searchString) {
@@ -76,14 +77,18 @@ class TransferController extends Controller
                         ->orwhereHas('bankTransaction', function ($bankTransaction) use ($searchString) {
                             $bankTransaction->where('transfer_code', 'like', "%{$searchString}%");
                         })
-                        ->orwhereHas('bankTransaction.transferRecipient',
+                        ->orwhereHas(
+                            'bankTransaction.transferRecipient',
                             function ($bankTransaction) use ($searchString) {
                                 $bankTransaction->where('name', 'like', "%{$searchString}%");
-                        })
-                        ->orwhereHas('bankTransaction.transferRecipient',
+                            }
+                        )
+                        ->orwhereHas(
+                            'bankTransaction.transferRecipient',
                             function ($bankTransaction) use ($searchString) {
                                 $bankTransaction->where('account_number', 'like', "%{$searchString}%");
-                        });
+                            }
+                        );
                 }
             ]
         );
