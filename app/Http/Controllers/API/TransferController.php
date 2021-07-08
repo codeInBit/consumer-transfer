@@ -113,6 +113,7 @@ class TransferController extends Controller
             }
 
             $transferRecipient = $this->bankTransferService->getTransferRecipient(
+                $user->id,
                 $request->account_number,
                 $request->bank_code,
                 $request->name,
@@ -129,7 +130,7 @@ class TransferController extends Controller
             $transfer = $this->paystackTransfer->initiateSingleTransfer(
                 $request->amount * 100,
                 $transferRecipient['data']['recipient_code'],
-                'transfer',
+                $request->input('narration', 'Transfer'),
             );
             if ($transfer['status'] != true) {
                 return $this->errorResponse(null, $transfer['message']);
@@ -142,6 +143,7 @@ class TransferController extends Controller
                 'reference' => $transfer['data']['reference'],
                 'transfer_code' => $transfer['data']['transfer_code'],
                 'status' => $transfer['data']['status'],
+                'narration' => $request->input('narration', 'Transfer'),
             ]);
 
             DB::commit();

@@ -18,7 +18,12 @@ class TransferRecipient extends Model
      *
      * @var array
      */
-    protected $fillable = ['recipient_code', 'account_number', 'type', 'bank_code', 'name'];
+    protected $fillable = ['recipient_code', 'account_number', 'type', 'bank_code', 'name', 'user_id'];
+
+    public function user()
+    {
+        return $this->belongTo('App\Models\User');
+    }
 
     public function bankTransactions()
     {

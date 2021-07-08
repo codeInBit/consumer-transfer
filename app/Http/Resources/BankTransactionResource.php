@@ -20,6 +20,7 @@ class BankTransactionResource extends JsonResource
             'reference' => $this->reference,
             'transfer_code' => $this->transfer_code,
             'status' => $this->status,
+            'narration' => $this->narration,
             'transfer_recipient' => new TransferRecipientResource($this->whenLoaded('transferRecipient')),
         ];
     }

@@ -18,6 +18,7 @@ class TransferRecipientResource extends JsonResource
             'name' => $this->name,
             'account_number' => $this->account_number,
             'bank_code' => $this->bank_code,
+            'owned_by' => new UserResource($this->whenLoaded('user')),
         ];
     }
 }

@@ -49,6 +49,7 @@ class WalletService
                 'trx_type' => WalletTransaction::TRX_TYPE['debit'],
                 'purpose' => WalletTransaction::PURPOSE['transfer'],
                 'transaction_date' => now(),
+                'status' => WalletTransaction::STATUS['success'],
             ]);
         });
 

@@ -24,9 +24,10 @@ class BankTransferService
      * Fetch paystack transfer recipient from DB or create if it doesnt eixst
      * based on provided account number and bank code
      */
-    public function getTransferRecipient($accountNumber, $bankCode, $name)
+    public function getTransferRecipient($userId, $accountNumber, $bankCode, $name)
     {
-        $transferRecipient = TransferRecipient::where('account_number', $accountNumber)
+        $transferRecipient = TransferRecipient::where('user_id', $userId)
+            ->where('account_number', $accountNumber)
             ->where('bank_code', $bankCode)
             ->first();
 
@@ -50,6 +51,7 @@ class BankTransferService
                 'type' => $transferRecipient['data']['type'],
                 'bank_code' => $transferRecipient['data']['details']['bank_code'],
                 'name' => $name,
+                'user_id' => $userId,
             ]);
         }
 

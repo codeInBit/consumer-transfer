@@ -19,7 +19,7 @@ class WalletTransaction extends Model
      * @var array
      */
     protected $fillable = ['wallet_id', 'amount', 'prev_balance', 'current_balance', 'reference',
-        'trx_type', 'purpose', 'transaction_date'
+        'trx_type', 'purpose', 'transaction_date', 'status',
     ];
 
     /**
@@ -41,6 +41,17 @@ class WalletTransaction extends Model
         'deposit' => 'deposit',
         'transfer' => 'transfer',
         'reversal' => 'reversal',
+    ];
+
+    /**
+     * Status Values
+     *
+     * @var array
+     */
+    public const STATUS = [
+        'pending' => 'pending',
+        'success' => 'success',
+        'failed' => 'failed',
     ];
 
     public function wallet()

@@ -56,4 +56,9 @@ class User extends Authenticatable
     {
         return $this->hasManyThrough('App\Models\WalletTransaction', 'App\Models\Wallet');
     }
+
+    public function transferRecipients()
+    {
+        return $this->hasMany('App\Models\TransferRecipient');
+    }
 }

@@ -22,6 +22,7 @@ class WalletTransactionResource extends JsonResource
             'trx_type' => $this->trx_type,
             'purpose' => $this->purpose,
             'transaction_date' => $this->transaction_date,
+            'status' => $this->status,
             'bank_transaction' => new BankTransactionResource($this->whenLoaded('bankTransaction')),
         ];
     }

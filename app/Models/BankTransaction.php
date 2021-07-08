@@ -19,7 +19,7 @@ class BankTransaction extends Model
      * @var array
      */
     protected $fillable = ['wallet_transaction_id', 'transfer_recipient_id', 'amount', 'provider', 'reference',
-        'transfer_code', 'status'
+        'transfer_code', 'status', 'narration',
     ];
 
     /**
