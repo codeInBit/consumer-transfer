@@ -48,4 +48,12 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Models\Wallet');
     }
+
+    /**
+     * Get all of the wallet transactions for the user.
+     */
+    public function walletTransactions()
+    {
+        return $this->hasManyThrough('App\Models\WalletTransaction', 'App\Models\Wallet');
+    }
 }

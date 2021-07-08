@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\BankTransferRequest;
 use App\Services\WalletService;
 use App\Models\BankTransaction;
+use App\Models\WalletTransaction;
 use Illuminate\Support\Facades\Auth;
 use App\Services\BankTransferService;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,6 +38,55 @@ class TransferController extends Controller
         $this->paystackTransfer = $paystackTransfer;
         $this->bankTransferService = $bankTransferService;
         $this->identityVerification = $identityVerification;
+    }
+
+    /**
+     * Paginated list of a user's transfers.
+     *
+     * @param  Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function getTransfers(Request $request)
+    {
+        $user = Auth::user();
+        /**
+         * I need the resulting $query to be an instance of Illuminate\\Database\\Eloquent\\Builder
+         * or Illuminate\\Database\\Query\\Builder, that was why I didn't use this.
+         * 
+         * $query = $user->walletTransactions()->with('bankTransaction');
+         */
+        $query = WalletTransaction::where('wallet_id', $user->wallet->id)
+            ->with('bankTransaction', 'bankTransaction.transferRecipient');
+
+        return $this->datatableResponse($query,
+            "App\Http\Resources\WalletTransactionResource",
+            [
+                'search' => function ($query, $searchString) {
+                    $query->where('amount', 'like', "%{$searchString}%")
+                        ->orwhere('reference', 'like', "%{$searchString}%")
+                        ->orwhere('trx_type', 'like', "%{$searchString}%")
+                        ->orwhere('purpose', 'like', "%{$searchString}%")
+                        ->orwhere('transaction_date', 'like', "%{$searchString}%")
+                        ->orwhereHas('bankTransaction', function ($bankTransaction) use ($searchString) {
+                            $bankTransaction->where('provider', 'like', "%{$searchString}%");
+                        })
+                        ->orwhereHas('bankTransaction', function ($bankTransaction) use ($searchString) {
+                            $bankTransaction->where('reference', 'like', "%{$searchString}%");
+                        })
+                        ->orwhereHas('bankTransaction', function ($bankTransaction) use ($searchString) {
+                            $bankTransaction->where('transfer_code', 'like', "%{$searchString}%");
+                        })
+                        ->orwhereHas('bankTransaction.transferRecipient',
+                            function ($bankTransaction) use ($searchString) {
+                                $bankTransaction->where('name', 'like', "%{$searchString}%");
+                        })
+                        ->orwhereHas('bankTransaction.transferRecipient',
+                            function ($bankTransaction) use ($searchString) {
+                                $bankTransaction->where('account_number', 'like', "%{$searchString}%");
+                        });
+                }
+            ]
+        );
     }
 
     /**
