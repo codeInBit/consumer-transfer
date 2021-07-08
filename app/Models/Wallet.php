@@ -24,4 +24,31 @@ class Wallet extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
+    public function transactions()
+    {
+        return $this->hasMany('App\Models\WalletTransaction');
+    }
+
+    /**
+     * Set wallet's balance.
+     *
+     * @param float $value
+     * @return void
+     */
+    public function setBalanceAttribute($value): void
+    {
+        $this->attributes['balance'] = (float) $value * 100;
+    }
+
+    /**
+     * Get wallet's balance.
+     *
+     * @param float $value
+     * @return double
+     */
+    public function getBalanceAttribute($value): float
+    {
+        return (float) $value / 100;
+    }
 }

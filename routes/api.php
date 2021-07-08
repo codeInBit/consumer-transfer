@@ -26,4 +26,12 @@ Route::group(['namespace' => 'API'], function () {
         Route::post('register', 'AuthenticationController@register');
         Route::post('login', 'AuthenticationController@login');
     });
+
+    Route::group([
+        'prefix' => 'transfers',
+        'middleware' => 'auth:api',
+    ], function () {
+        Route::post('/', 'TransferController@transfer');
+        Route::get('/', 'TransferController@getTransfers');
+    });
 });

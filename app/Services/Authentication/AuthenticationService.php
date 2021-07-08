@@ -3,7 +3,6 @@
 namespace App\Services\Authentication;
 
 use App\Models\User;
-use App\Helpers\Formatter;
 
 class AuthenticationService
 {
