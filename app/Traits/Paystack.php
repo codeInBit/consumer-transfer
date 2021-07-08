@@ -31,7 +31,7 @@ trait Paystack
                 'status' => false,
                 'message' => 'Sorry, the transfer cannot be completed at the moment'
             ];
-            \Log::emergency('Paystack error: '.json_encode($response->json()));
+            \Log::emergency('Paystack error: ' . json_encode($response->json()));
 
             return $data;
         }
@@ -42,7 +42,7 @@ trait Paystack
                 'message' => $response->json()['message'],
                 'data' => $response->json()
             ];
-            \Log::info('Paystack error: '.json_encode($response->json()));
+            \Log::info('Paystack error: ' . json_encode($response->json()));
 
             return $data;
         }
