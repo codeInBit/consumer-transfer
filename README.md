@@ -8,7 +8,7 @@ being able to list & search their transfer history.
 Users (Consumers) signup/login on the platform and a digital wallet is created for them during the process, this wallet can be funded, but for the purpose of this demo, all users have (NGN) 3,000.00 in their wallet when they signup. This money can then be transfered from the wallet to any bank account using paystack as the payment gateway. 
 
 ## Technology
-This project was built with Laravel PHP while PHPCS and PHPStan are setup and configured in the codebase as static analysis tool to ensure clean, readable, good code quality and uniform standards across the codebase.
+This project was built with Laravel PHP while PHPCS and PHPStan are setup and configured in the codebase as static analysis tool to ensure clean, readable, good code quality and uniform standards across the codebase. Github Action is also setup for CI pipeline.
 
 - To run PHPCS configuration against the codebase locally, run the command *./vendor/bin/phpcs*
 - To run PHPStan configuration against the codebase locally, run the command *./vendor/bin/phpstan analyse*
