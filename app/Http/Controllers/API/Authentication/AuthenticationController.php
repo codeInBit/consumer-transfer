@@ -43,13 +43,13 @@ class AuthenticationController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  RegisterRequest  $request
-     * @return UserResource
+     * @return \Illuminate\Http\Response
      */
     protected function register(RegisterRequest $request)
     {
         try {
             DB::beginTransaction();
-            
+
             $user = $this->authService->register($request->name, $request->email, $request->password);
             $response = new UserResource($user);
 
