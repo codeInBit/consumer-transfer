@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,7 +10,6 @@ class BankTransaction extends Model
 {
     use SoftDeletes;
     use HasFactory;
-    use Uuid;
 
     /**
      * The attributes that are mass assignable.
@@ -55,22 +53,22 @@ class BankTransaction extends Model
     /**
      * Set bank transaction's amount.
      *
-     * @param float $value
+     * @param int $value
      * @return void
      */
     public function setAmountAttribute($value): void
     {
-        $this->attributes['amount'] = (float) $value * 100;
+        $this->attributes['amount'] = (int) $value * 100;
     }
 
     /**
      * Get bank transaction's amount.
      *
-     * @param float $value
-     * @return double
+     * @param int $value
+     * @return int
      */
-    public function getAmountAttribute($value): float
+    public function getAmountAttribute($value): int
     {
-        return (float) $value / 100;
+        return (int) $value / 100;
     }
 }

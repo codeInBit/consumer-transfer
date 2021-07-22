@@ -19,6 +19,7 @@ Route::get('/', function () {
         [
             "success" => true,
             "message" => "Yoh! You should not be here :)"
-        ], Response::HTTP_OK
+        ],
+        Response::HTTP_OK
     );
 });

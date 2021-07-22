@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,7 +10,6 @@ class WalletTransaction extends Model
 {
     use SoftDeletes;
     use HasFactory;
-    use Uuid;
 
     /**
      * The attributes that are mass assignable.
@@ -67,66 +65,66 @@ class WalletTransaction extends Model
     /**
      * Set transaction's amount.
      *
-     * @param float $value
+     * @param int $value
      * @return void
      */
     public function setAmountAttribute($value): void
     {
-        $this->attributes['amount'] = (float) $value * 100;
+        $this->attributes['amount'] = (int) $value * 100;
     }
 
     /**
      * Get transaction's amount.
      *
-     * @param float $value
-     * @return double
+     * @param int $value
+     * @return int
      */
-    public function getAmountAttribute($value): float
+    public function getAmountAttribute($value): int
     {
-        return (float) $value / 100;
+        return (int) $value / 100;
     }
 
     /**
      * Set transaction's pre_balance.
      *
-     * @param float $value
+     * @param int $value
      * @return void
      */
     public function setPrevBalanceAttribute($value): void
     {
-        $this->attributes['prev_balance'] = (float) $value * 100;
+        $this->attributes['prev_balance'] = (int) $value * 100;
     }
 
     /**
      * Get transaction's pre_balance.
      *
-     * @param float $value
-     * @return double
+     * @param int $value
+     * @return int
      */
-    public function getPrevBalanceAttribute($value): float
+    public function getPrevBalanceAttribute($value): int
     {
-        return (float) $value / 100;
+        return (int) $value / 100;
     }
 
     /**
      * Set transaction's current_balance.
      *
-     * @param float $value
+     * @param int $value
      * @return void
      */
     public function setCurrentBalanceAttribute($value): void
     {
-        $this->attributes['current_balance'] = (float) $value * 100;
+        $this->attributes['current_balance'] = (int) $value * 100;
     }
 
     /**
      * Get transaction's current_balance.
      *
-     * @param float $value
-     * @return double
+     * @param int $value
+     * @return int
      */
-    public function getCurrentBalanceAttribute($value): float
+    public function getCurrentBalanceAttribute($value): int
     {
-        return (float) $value / 100;
+        return (int) $value / 100;
     }
 }
