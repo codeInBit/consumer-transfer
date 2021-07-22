@@ -8,7 +8,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
-use App\Traits\Uuid;
 
 class User extends Authenticatable
 {
@@ -16,7 +15,6 @@ class User extends Authenticatable
     use SoftDeletes;
     use HasFactory;
     use Notifiable;
-    use Uuid;
 
     /**
      * The attributes that are mass assignable.

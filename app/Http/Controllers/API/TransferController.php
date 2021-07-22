@@ -5,22 +5,16 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\BankTransferRequest;
-use App\Services\WalletService;
 use App\Models\BankTransaction;
 use App\Models\WalletTransaction;
 use Illuminate\Support\Facades\Auth;
 use App\Services\BankTransferService;
 use Symfony\Component\HttpFoundation\Response;
-use App\Services\ThirdPartyService\Payment\Paystack\Transfer;
-use App\Services\ThirdPartyService\Payment\Paystack\IdentityVerification;
 use Exception;
 use DB;
 
 class TransferController extends Controller
 {
-    protected $paystackTransfer;
-    protected $walletService;
-    protected $identityVerification;
     protected $bankTransferService;
 
     /**
@@ -29,15 +23,9 @@ class TransferController extends Controller
      * @return void
      */
     public function __construct(
-        Transfer $paystackTransfer,
-        WalletService $walletService,
-        BankTransferService $bankTransferService,
-        IdentityVerification $identityVerification
+        BankTransferService $bankTransferService
     ) {
-        $this->walletService = $walletService;
-        $this->paystackTransfer = $paystackTransfer;
         $this->bankTransferService = $bankTransferService;
-        $this->identityVerification = $identityVerification;
     }
 
     /**
@@ -109,47 +97,18 @@ class TransferController extends Controller
             DB::beginTransaction();
 
             $user = Auth::user();
-            $accountDetails = $this->identityVerification->resolveAccountNumber(
-                $request->account_number,
-                $request->bank_code,
-            );
-            if ($accountDetails['status'] != true) {
-                return $this->errorResponse(null, $accountDetails['message']);
-            }
 
-            $transferRecipient = $this->bankTransferService->getTransferRecipient(
+            $transferRecipient = $this->bankTransferService->transferFromWalletToBankAccount(
                 $user->id,
                 $request->account_number,
                 $request->bank_code,
                 $request->name,
+                $request->amount,
+                $request->input('narration', 'Bank Transfer'),
             );
             if ($transferRecipient['status'] != true) {
                 return $this->errorResponse(null, $transferRecipient['message']);
             }
-
-            $walletTransaction = $this->walletService->debit($user->id, $request->amount);
-            if ($walletTransaction['status'] != true) {
-                return $this->errorResponse(null, $walletTransaction['message']);
-            }
-
-            $transfer = $this->paystackTransfer->initiateSingleTransfer(
-                $request->amount * 100,
-                $transferRecipient['data']['recipient_code'],
-                $request->input('narration', 'Transfer'),
-            );
-            if ($transfer['status'] != true) {
-                return $this->errorResponse(null, $transfer['message']);
-            }
-
-            $transferRecipient['data']->bankTransactions()->create([
-                'wallet_transaction_id' => $walletTransaction['data']['id'],
-                'amount' => (float) $transfer['data']['amount'] / 100,
-                'provider' => BankTransaction::PROVIDER['paystack'],
-                'reference' => $transfer['data']['reference'],
-                'transfer_code' => $transfer['data']['transfer_code'],
-                'status' => $transfer['data']['status'],
-                'narration' => $request->input('narration', 'Transfer'),
-            ]);
 
             DB::commit();
 

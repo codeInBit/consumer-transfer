@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,7 +10,6 @@ class Wallet extends Model
 {
     use SoftDeletes;
     use HasFactory;
-    use Uuid;
 
     /**
      * The attributes that are mass assignable.
@@ -33,22 +31,22 @@ class Wallet extends Model
     /**
      * Set wallet's balance.
      *
-     * @param float $value
+     * @param int $value
      * @return void
      */
     public function setBalanceAttribute($value): void
     {
-        $this->attributes['balance'] = (float) $value * 100;
+        $this->attributes['balance'] = (int) $value * 100;
     }
 
     /**
      * Get wallet's balance.
      *
-     * @param float $value
-     * @return double
+     * @param int $value
+     * @return int
      */
-    public function getBalanceAttribute($value): float
+    public function getBalanceAttribute($value): int
     {
-        return (float) $value / 100;
+        return (int) $value / 100;
     }
 }
