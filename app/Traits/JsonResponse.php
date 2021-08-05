@@ -36,7 +36,8 @@ trait JsonResponse
         ];
 
         if ($data) {
-            $response["data"] = $data;
+            $response["data"] = $data['data']['data'];
+            $response["metadata"] = $data['metadata'];
         }
         return response()->json($response, Response::HTTP_OK);
     }

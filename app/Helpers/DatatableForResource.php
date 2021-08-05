@@ -119,8 +119,11 @@ class DatatableForResource
 
         $chunkCount = count($chunk);
 
-        $data = [
+        $data['data'] = [
             'data' => $chunk,
+        ];
+
+        $data['metadata'] = [
             'total_count' => $totalCount,
             'chunk_count' => $chunkCount,
             'page_count' => $pageCount,
@@ -129,10 +132,10 @@ class DatatableForResource
             'order' => $datatable->order,
         ];
         if (config('app.env') == 'local') {
-            $data['query'] = $datatable->getDataQuery();
+            $data['metadata']['query'] = $datatable->getDataQuery();
         }
 
-        return json_decode(json_encode($data));
+        return $data;
     }
 
     private function getQuery()
